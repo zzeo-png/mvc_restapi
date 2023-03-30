@@ -155,6 +155,112 @@ else if(!(isset($_COOKIE[$id]))){
 		?>
 	</div>
 	<?php
+		if(isset($_SESSION["USER_ID"])){
+			?>
+				<h4>Dodaj komentar</h4>
+				<textarea id="content"></textarea>
+				<button id="post_comment">Objavi</button>
+
+				<script>
+					$(document).ready(() => {
+						$("#post_comment").click(postComment)
+					})
+
+					function postComment(){
+						var data = {
+							ad: (<?php echo $_GET["id"] ?>),
+							content: $("#content").val()
+						}
+
+						$("#content").val("")
+
+						$.post("/api/index.php/comments/", data, (comment) => {
+							const wrapper = document.createElement("div")
+							wrapper.id = comment.id
+							wrapper.classList.add("comment")
+					
+							const user = document.createElement("h4")
+							user.innerHTML = comment.user.username
+							wrapper.append(user)
+
+							const content = document.createElement("p")
+							content.innerHTML = comment.content
+							wrapper.append(content)
+
+							const delete_btn = document.createElement("button")
+							delete_btn.innerHTML = "Izbriši"
+							delete_btn.classList.add("delete")
+							wrapper.append(delete_btn)
+
+							$("#comments").append(wrapper)
+							$(".delete").click(deleteClick)
+						})
+					}
+				</script>
+			<?php
+		}
+	?>
+	<div class="comment_section">
+		<h2>Komentarji: </h2>
+		<div class="comments" id="comments"></div>
+	</div>
+	<script>
+		$(document).ready(async () => {
+			await loadComments()
+			$(".delete").click(deleteClick)
+		})
+
+		async function loadComments(){
+			await $.get("/api/index.php/comments/" + <?php echo $_GET["id"] ?>, renderComments)
+		}
+
+		function renderComments(comments){
+			comments.forEach(comment => {
+				const wrapper = document.createElement("div")
+				wrapper.id = comment.id
+				wrapper.classList.add("comment")
+				
+				const user = document.createElement("h4")
+				user.innerHTML = comment.user.username
+				wrapper.append(user)
+
+				const content = document.createElement("p")
+				content.innerHTML = comment.content
+				wrapper.append(content)
+
+				<?php if(isset($_SESSION["USER_ID"])){
+					?>
+					
+					if((comment.user.id == (<?php echo $_SESSION["USER_ID"] ?>)) ||  ((<?php echo $_SESSION["USER_ID"] ?>) == (<?php echo $ad->user_id ?>))){
+						const delete_btn = document.createElement("button")
+						delete_btn.innerHTML = "Izbriši"
+						delete_btn.classList.add("delete")
+						wrapper.append(delete_btn)
+					}
+					<?php
+					}
+				?>
+
+				$("#comments").append(wrapper)
+			})
+		}
+
+		function deleteClick(){
+			console.log("DELTE CALLED")
+			var comment = $(this).closest(".comment");
+			deleteComment(comment)
+			comment.remove();
+		}
+
+		function deleteComment(comment){
+			var id = comment.attr("id")
+			$.ajax({
+				url: "/api/index.php/comments/" + id,
+				method: "DELETE"
+			})
+		}
+	</script>
+	<?php
 
 include_once('footer.php');
 ?>

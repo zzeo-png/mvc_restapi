@@ -56,6 +56,41 @@ function get_cover_img($id){
 $ads = get_ads();
 ?>
 <div class="container">
+	<div id="comments">
+		<p>Najnovejši oglasi</p>
+	</div>
+	<script>
+		$(document).ready(async () => {
+			await loadComments()
+		})
+
+		async function loadComments(){
+			await $.get("/api/index.php/comments", renderComments)
+		}
+
+		function renderComments(comments){
+			comments.forEach(comment => {
+				const wrapper = document.createElement("div")
+				wrapper.id = comment.id
+				wrapper.classList.add("comment")
+				
+				const user = document.createElement("h4")
+				user.innerHTML = comment.user.username
+				wrapper.append(user)
+
+				const content = document.createElement("p")
+				content.innerHTML = comment.content
+				wrapper.append(content)
+
+				const ad = document.createElement("a")
+				ad.innerHTML = comment.ad.title
+				ad.href = "/ad.php?id=" + comment.ad.id
+				wrapper.append(ad)
+
+				$("#comments").append(wrapper)
+			})
+		}
+	</script>
 	<div class="heading">Najnovejši oglasi</div>
 <?php
 //Izpiši oglase
