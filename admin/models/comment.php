@@ -9,15 +9,17 @@ class Comment
     public $ad;
     public $content;
     public $time;
+    public $ip;
 
     // Konstruktor
-    public function __construct($id, $user, $ad, $content, $time)
+    public function __construct($id, $user, $ad, $content, $time, $ip)
     {
         $this->id = $id;
         $this->user = User::find($user); //naložimo podatke o uporabniku
         $this->ad = Ad::find($ad);
         $this->content = $content;
         $this->time = $time;
+        $this->ip = $ip;
     }
 
     public static function all($id)
@@ -28,7 +30,7 @@ class Comment
         $query = "SELECT * FROM comments WHERE id_ad = '$id';";
         $res = $db->query($query);
         while ($comment = $res->fetch_object()) {
-            array_push($comments, new Comment($comment->id, $comment->id_user, $comment->id_ad, $comment->content, $comment->timestamp));
+            array_push($comments, new Comment($comment->id, $comment->id_user, $comment->id_ad, $comment->content, $comment->timestamp, $comment->ip));
         }
 
         return $comments;
@@ -37,10 +39,10 @@ class Comment
     public static function lastFive(){
         $comments = array();
         $db = Db::getInstance();
-        $query = "SELECT * FROM comments ORDER BY timestamp DESC;";
+        $query = "SELECT * FROM comments ORDER BY timestamp DESC LIMIT 5;";
         $res = $db->query($query);
         while ($comment = $res->fetch_object()) {
-            array_push($comments, new Comment($comment->id, $comment->id_user, $comment->id_ad, $comment->content, $comment->timestamp));
+            array_push($comments, new Comment($comment->id, $comment->id_user, $comment->id_ad, $comment->content, $comment->timestamp, $comment->ip));
         }
 
         return $comments;
@@ -52,7 +54,7 @@ class Comment
         $query = "SELECT * FROM comments WHERE id = '$id';";
         $res = $db->query($query);
         if($comment = $res->fetch_object()){
-            return new Comment($comment->id, $comment->id_user, $comment->id_ad, $comment->content, $comment->timestamp);
+            return new Comment($comment->id, $comment->id_user, $comment->id_ad, $comment->content, $comment->timestamp, $comment->ip);
         }
         return null;
     }
@@ -61,7 +63,11 @@ class Comment
     {
         $user = $_SESSION["USER_ID"];
         $db = Db::getInstance();
-        $query = "INSERT INTO comments (id_user, id_ad, content) VALUES ($user, $ad, '$content');";
+        $ip = $_SERVER['REMOTE_ADDR'];
+        if($ip == "::1"){
+            $ip = "176.57.95.80";
+        }
+        $query = "INSERT INTO comments (id_user, id_ad, content, ip) VALUES ($user, $ad, '$content', '$ip');";
         if($db->query($query)){
             $id = mysqli_insert_id($db);
             return Comment::find($id);

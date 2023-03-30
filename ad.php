@@ -221,7 +221,9 @@ else if(!(isset($_COOKIE[$id]))){
 				wrapper.classList.add("comment")
 				
 				const user = document.createElement("h4")
-				user.innerHTML = comment.user.username
+				getCountry(comment.ip, country => {
+					user.innerHTML = comment.user.username + " " + country
+				})
 				wrapper.append(user)
 
 				const content = document.createElement("p")
@@ -257,6 +259,20 @@ else if(!(isset($_COOKIE[$id]))){
 			$.ajax({
 				url: "/api/index.php/comments/" + id,
 				method: "DELETE"
+			})
+		}
+
+		function getCountry(ip, callback){
+			$.ajax({
+				url: "http://ip-api.com/json/" + ip +"?field=country",
+				success: (data) => {
+					if(data.status === "success"){
+						callback(data.country)
+					}
+					else{
+						console.log("Error: ", data.message)
+					}
+				}
 			})
 		}
 	</script>
