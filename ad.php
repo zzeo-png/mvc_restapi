@@ -157,9 +157,11 @@ else if(!(isset($_COOKIE[$id]))){
 	<?php
 		if(isset($_SESSION["USER_ID"])){
 			?>
-				<h4>Dodaj komentar</h4>
-				<textarea id="content"></textarea>
-				<button id="post_comment">Objavi</button>
+				<div class="add_comment">
+					<h4>Dodaj komentar</h4>
+					<textarea id="content" cols="40" rows="5"></textarea>
+					<button id="post_comment">Objavi</button>
+				</div>
 
 				<script>
 					$(document).ready(() => {
@@ -180,7 +182,9 @@ else if(!(isset($_COOKIE[$id]))){
 							wrapper.classList.add("comment")
 					
 							const user = document.createElement("h4")
-							user.innerHTML = comment.user.username
+							getCountry(comment.ip, country => {
+								user.innerHTML = comment.user.username + " - " + country
+							})
 							wrapper.append(user)
 
 							const content = document.createElement("p")
@@ -222,7 +226,7 @@ else if(!(isset($_COOKIE[$id]))){
 				
 				const user = document.createElement("h4")
 				getCountry(comment.ip, country => {
-					user.innerHTML = comment.user.username + " " + country
+					user.innerHTML = comment.user.username + " - " + country
 				})
 				wrapper.append(user)
 

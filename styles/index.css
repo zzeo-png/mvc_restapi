@@ -43,3 +43,29 @@ hr{
     width: inherit;
     border-radius: .7em;
 }
+
+.comment{
+    border-bottom: .15em solid var(--black);
+    width: fit-content;
+    padding: .5em 2em;
+}
+
+.comment button{
+    font-size: 1em;
+    padding: .5em;
+    margin-top: .5em;
+}
+
+.comment h4{
+    font-weight: 900;
+    font-size: 1.2em;
+    border-left: .15em solid var(--red);
+    padding-left: .5em;
+}
+
+#comments{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}

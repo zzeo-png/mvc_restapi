@@ -56,8 +56,8 @@ function get_cover_img($id){
 $ads = get_ads();
 ?>
 <div class="container">
+	<h2>Najnovejši komentarji</h2>
 	<div id="comments">
-		<p>Najnovejši oglasi</p>
 	</div>
 	<script>
 		$(document).ready(async () => {
