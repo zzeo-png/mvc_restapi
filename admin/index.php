@@ -6,6 +6,17 @@
 */
 
 require_once('connection.php');
+require_once('models/users.php');
+
+function is_admin($user_id){
+    $user = User::find($user_id);
+    if($user->isAdmin == 1){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
 session_start();
 	
@@ -15,15 +26,21 @@ if(isset($_SESSION['LAST_ACTIVITY']) && time() - $_SESSION['LAST_ACTIVITY'] < 18
 }
 $_SESSION['LAST_ACTIVITY'] = time();
 
-// Razberemo namero uporabnika preko query string parametrov controller in action
-if (isset($_GET['controller']) && isset($_GET['action'])) {
-	$controller = $_GET['controller'];
-	$action     = $_GET['action'];
-} else {
-  	// Če uporabnik ni podal svoje zahteve v pravilni obliki, ga preusmerimo na privzeto akcijo
-	$controller = 'ads';
-	$action     = 'index';
-}
+// preveri če je uporabnik administrator
+if(isset($_SESSION["USER_ID"]) && is_admin($_SESSION["USER_ID"])){
+    // Razberemo namero uporabnika preko query string parametrov controller in action
+    if (isset($_GET['controller']) && isset($_GET['action'])) {
+        $controller = $_GET['controller'];
+        $action     = $_GET['action'];
+    } else {
+        // Če uporabnik ni podal svoje zahteve v pravilni obliki, ga preusmerimo na privzeto akcijo
+        $controller = 'ads';
+        $action     = 'index';
+    }
 
-// Vključimo layout, torej splošni izgled strani, layout pa vključuje router (routes.php)
-require_once('views/layout.php');
+    // Vključimo layout, torej splošni izgled strani, layout pa vključuje router (routes.php)
+    require_once('views/layout.php');
+}
+else{
+    echo "Vstop prepovedan.";
+}

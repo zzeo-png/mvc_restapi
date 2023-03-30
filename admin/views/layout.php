@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <head>
-	<title>Vaja 2</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<title>Administracija - Klop.com</title>
+    <link rel="icon" href="../icon/klop.com_icon.png">
+	<link rel="stylesheet" href="../styles/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Seaweed+Script&display=swap" rel="stylesheet">
 </head>
 <body>
 	<h1>Oglasnik - administracija</h1>
