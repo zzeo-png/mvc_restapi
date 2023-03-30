@@ -1,0 +1,22 @@
+# Datoteka .htaccess nastavi konfiguracijo Apache strežnika v trenutni mapi
+# V tem primeru smo vključili modul mod_rewrite, ki skrbi za preslikovanje URL naslovov.
+# To nam omogoča, da uporabnik v brskalniku vidi in uporablja 'lepe' URL naslove, strežnik pa vidi preslikane različice.
+# Napisali smo pravila za preslikovanje URL naslovov v MVC in API.
+# Več o pravilih lahko zveste na http://httpd.apache.org/docs/current/mod/mod_rewrite.html
+
+# Vključimo mod_rewrite
+RewriteEngine on
+
+# Rewrite "/admin/some_controller/some_action" => "/admin/index.php?controller=some_controller&action=some_action"
+RewriteRule ^admin/([^/]+)/([^/]+)$ /admin/index.php?controller=$1&action=$2 [L,QSA]
+
+# Preveri, da ni api/index.php že v URL-ju
+RewriteCond %{REQUEST_URI} !api/index\.php
+# Rewrite "/api/foo/bar" => "/api/index.php/foo/bar"
+RewriteRule ^api/(.*)$ /api/index.php/$1 [L,QSA]
+
+
+# OPOMBA:
+# V kolikor vam brskalnik za kratke URL naslove javlja 'Page not found', vam mod_rewrite ne deluje pravilno.
+# V tem primeru lahko uporabljate dolge URL naslove, ali pa se poigrate s konfiguracijo vašega strežnika.
+# V kodi so vse povezave (linki, form action, ...) nastavljeni tako, da uporabljajo dolge URL naslove.
