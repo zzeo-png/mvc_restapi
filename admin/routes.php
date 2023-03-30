@@ -33,7 +33,8 @@ if (
 ) {
   // Pokličemo akcijo
   call($controller, $action);
-} else {
+}
+else {
   // Izpišemo stran z napako
   call('pages', 'error');
 }

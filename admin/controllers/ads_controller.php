@@ -46,7 +46,7 @@ class ads_controller
         // Tukaj bi morali podatke še validirati, preden jih dodamo v bazo
 
         // Pokličemo metodo za ustvarjanje novega oglasa
-        $ad = Ad::insert($_POST["title"], $_POST["description"], $_FILES["image"]);
+        $ad = Ad::insert($_POST["title"], $_POST["description"], $_FILES["images"], $_POST["cover"], $_POST["categories"]);
 
         //ko je oglas dodan, imamo v $ad podatke o tem novem oglasu
         //uporabniku lahko pokažemo pogled, ki ga bo obvestil o uspešnosti oddaje oglasa
@@ -74,7 +74,7 @@ class ads_controller
         // Naložimo oglas
         $ad = Ad::find($_POST['id']);
         // Pokličemo metodo, ki posodobi obstoječi oglas v bazi
-        $ad = $ad->update($_POST["title"], $_POST["description"], $_FILES["image"]);
+        $ad = $ad->update($_POST["title"], $_POST["description"], $_FILES["images"], $_POST["delete_imgs"], $_POST["cover"], $_POST["categories"]);
         // Izpišemo pogled s sporočilom o uspehu
         require_once('views/ads/editSuccess.php');
     }

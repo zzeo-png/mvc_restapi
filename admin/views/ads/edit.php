@@ -13,7 +13,6 @@
 ?>
 
 <head>
-	<title><?php echo $ad->title ?> - Klop.com</title>
 	<link rel="stylesheet" href="../styles/publish.css">
 </head>
 
@@ -71,7 +70,11 @@
 					?>
 						<script>
 						images = (<?php echo $json ?>)
+                        images.forEach(img => {
+                            img.name = "/" + img.name
+                        })
 						cover = (<?php echo json_encode(Ad::get_cover($ad->id)) ?>)
+                        cover.name = "/" + cover.name
 						</script>
 					<?php
 			?>
@@ -144,31 +147,41 @@
 			if(images.length > 0){
 				// dobi slike
 				for(let i = 0; i < new_images.length; i++){
+                    new_images[i].name = new_images[i].name.substring(1)
 					formData.append("images[]", new_images[i])
 				}
 
 				// slike za brisanje
 				for(let i = 0; i < imgs_to_delete.length; i++){
+                    imgs_to_delete[i].name = imgs_to_delete[i].name.substring(1)
 					formData.append("delete_imgs[" + i + "][name]", imgs_to_delete[i].name)
 				}
 
 				// cover image
 				if(cover){
+                    cover.name = cover.name.substring(1)
 					formData.append("cover", cover.name)
 				}
 				else{
 					covFlag = false;
 				}
 			}
+            for (const entry of formData) {
+                console.log(entry[0] + ': ' + entry[1]);
+            }
 
 			if(catFlag && covFlag && images.length > 0){
 				fetch(form.action, {
 					method: form.method,
-					body: formData,
-					redirect: 'follow'
+					body: formData
 				})
 				.then(response => {
-					window.location.href = response.url
+                    if(response.ok){
+					    window.location.href = response.url
+                    }
+                    else{
+                        console.log("ERROR")
+                    }
 				})
 			}
 			else if(images.length <= 0){
@@ -265,7 +278,7 @@
 			}
 
 			const image = document.createElement("img")
-			image.src = "../" + img
+			image.src = img
 
 			// close icon
 			const btn = document.createElement("div")
