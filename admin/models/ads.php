@@ -16,17 +16,23 @@ class Ad
     public $id;
     public $title;
     public $description;
-    public $image;
     public $user;
+    public $time;
+    public $categories;
+    public $cover;
+    public $images;
+    public $views;
 
     // Konstruktor
-    public function __construct($id, $title, $description, $image, $user_id)
+    public function __construct($id, $title, $description, $user_id, $time, $categories, $images)
     {
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
-        $this->image = base64_encode($image); //byte array (blob) zakodiramo v base64 string
         $this->user = User::find($user_id); //naložimo podatke o uporabniku
+        $this->time = $time;
+        $this->categories = $categories;
+        $this->images = $images;
     }
 
     // Metoda, ki iz baze vrne vse oglase
@@ -37,8 +43,12 @@ class Ad
         $res = $db->query($query); // poženemo query
         $ads = array();
         while ($ad = $res->fetch_object()) {
+            // dobi kategorije
+            $cats = Ad::get_categories($ad->id);
+            // dobi slike
+            $imgs = Ad::get_images($ad->id);
             // Za vsak rezultat iz baze ustvarimo objekt (kličemo konstuktor) in ga dodamo v array $ads
-            array_push($ads, new Ad($ad->id, $ad->title, $ad->description, $ad->image, $ad->user_id));
+            array_push($ads, new Ad($ad->id, $ad->title, $ad->description, $ad->user_id, $ad->timestamp, $cats, $imgs));
         }
         return $ads;
     }
@@ -51,11 +61,64 @@ class Ad
         $query = "SELECT * FROM ads WHERE ads.id = '$id';";
         $res = $db->query($query);
         if ($ad = $res->fetch_object()) {
-            return new Ad($ad->id, $ad->title, $ad->description, $ad->image, $ad->user_id);
+            // dobi kategorije
+            $cats = Ad::get_categories($ad->id);
+            // dobi slike
+            $imgs = Ad::get_images($ad->id);
+            // vrni oglas
+            return new Ad($ad->id, $ad->title, $ad->description, $ad->user_id, $ad->timestamp, $cats, $imgs);
         }
         return null;
     }
 
+    // Metoda, ki vrne vse kategorije oglasa
+    public static function get_categories($id){
+	    $categories = array();
+        $db = Db::getInstance();
+        $id = mysqli_real_escape_string($db, $id);
+        $query = "SELECT categories.value FROM category_in_ad
+                JOIN ads ON category_in_ad.id_ad = ads.id
+                JOIN categories ON category_in_ad.id_category = categories.id
+                WHERE ads.id = $id;";
+        $res = $db->query($query);
+        if($res->num_rows > 0){
+            while($row = $res->fetch_array()){
+                array_push($categories, $row['value']);
+            }
+        }
+        
+        return $categories;
+    }
+
+    // Metoda, ki vrne naslovno sliko oglasa
+    public static function get_cover($id){
+        $db = Db::getInstance();
+        $id = mysqli_real_escape_string($db, $id);
+        $query = "SELECT images.name FROM image_in_ad
+                JOIN ads ON image_in_ad.id_ad = ads.id
+                JOIN images ON image_in_ad.id_image = images.id
+                WHERE ads.id = $id AND is_primary = 1;";
+        $res = $db->query($query);
+            
+        return $res->fetch_object();
+    }
+    
+    // Metoda, ki vrne slike oglasa
+    public static function get_images($id){
+        $imgs = array();
+        $db = Db::getInstance();
+        $id = mysqli_real_escape_string($db, $id);
+        $query = "SELECT images.name FROM image_in_ad
+                JOIN ads ON image_in_ad.id_ad = ads.id
+                JOIN images ON image_in_ad.id_image = images.id
+                WHERE ads.id = $id;";
+        $res = $db->query($query);
+        while($img = $res->fetch_object()){
+            array_push($imgs, $img);
+        }
+
+        return $imgs;
+    }
 
     // Metoda, ki doda nov oglas v bazo
     public static function insert($title, $desc, $img)
