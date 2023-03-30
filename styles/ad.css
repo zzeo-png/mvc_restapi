@@ -1,0 +1,87 @@
+:root{
+    --black: #060606;
+    --white: #f2f3f8;
+    --red: #c02739;
+}
+
+.ad{
+    padding: 1.5em;
+    padding-left: 3em;
+    min-height: 100vh;
+}
+
+.ad .title{
+    font-weight: 700;
+    font-size: 2em;
+    border-bottom: .1em solid var(--red);
+    padding-bottom: .5em;
+    width: fit-content;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.ad .desc{
+    padding: 2em 0;
+    font-size: 1.2em;
+    overflow-wrap: anywhere;
+}
+
+.ad .images{
+    padding: 2rem 0;
+    border-bottom: .2em solid var(--red);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad .images img{
+    width: 15rem;
+    height: auto;
+    margin: 1rem 2rem;
+    border-radius: .7em;
+}
+
+.info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.cats span{
+    font-size: 1em;
+}
+
+.cats span img{
+    margin-right: .6em;
+}
+
+.time{
+    font-style: italic;
+}
+
+.user-icon{
+    width: fit-content;
+    margin-top: 2rem;
+}
+
+.user-icon img{
+    width: 2rem;
+}
+
+.user-info ul{
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-info li{
+    padding: .5em 0;
+    font-weight: 400;
+}
+
+.user-info li span{
+    font-weight: 700;
+}

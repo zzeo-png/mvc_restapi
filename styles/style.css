@@ -1,0 +1,135 @@
+:root{
+    --black: #060606;
+    --white: #f2f3f8;
+    --red: #c02739;
+}
+
+*{
+    font-family: 'Comfortaa';
+    background-color: var(--white);
+}
+
+body{
+    padding: 0;
+    margin: 0;
+}
+
+.header{
+    background-color: var(--black);
+    display: flex;
+    align-items: center;
+    border-bottom: .2em solid var(--red);
+    color: var(--white);
+}
+
+.logo{
+    font-family: 'Seaweed Script', cursive;
+    color: var(--red);
+    font-size: 3em;
+    width: fit-content;
+    padding: .4em;
+    background-color: inherit;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+}
+
+.logo img{
+    background-color: rgba(0, 0, 0, 0);
+    width: .8em;
+    transform: rotate(15deg);
+    margin-right: .2em;
+}
+
+.logo:hover{
+    cursor: pointer;
+}
+
+.header nav{
+    padding: 0 8vw;
+    position: absolute;
+    right: 0;
+    background-color: inherit;
+    z-index: 9;
+}
+
+.header nav ul{
+    list-style-type: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    background-color: inherit;
+}
+
+.header nav ul li{
+    padding: 0 1.2em;
+    font-size: 1.1em;
+    font-weight: 700;
+    background-color: inherit;
+}
+
+.header nav ul li:hover a{
+    text-decoration: underline;
+}
+
+.header nav ul li a{
+    text-decoration: none;
+    color: var(--white);
+    background-color: inherit;
+}
+
+.footer{
+    display: flex;
+    border-top: .2em solid var(--red);
+    background-color: var(--black);
+    color: var(--white);
+    height: 4em;
+    align-items: center;
+}
+
+.footer span{
+    background-color: var(--black);
+    color: var(--white);
+    padding: 0 2em;
+}
+
+button{
+    font-weight: 700;
+    border: .2em solid var(--red);
+    border-radius: .3em;
+    padding: .7em;
+    background-color: var(--black);
+    color: var(--white);
+    font-size: 1em;
+    margin-top: 2em;
+}
+
+button:hover{
+    cursor: pointer;
+    background-color: var(--red);
+    color: var(--white);
+    border-color: var(--black);
+}
+
+.cats{
+    display: flex;
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+
+.cats span{
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    padding: .5em;
+    border: .1em solid var(--black);
+    border-radius: .4em;
+    margin-right: .5em;
+    font-size: .8em;
+    font-weight: 500;
+}
+
+.cats span img{
+    width: 1.2em;
+    margin-right: .3em;
+}

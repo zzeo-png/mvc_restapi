@@ -1,0 +1,45 @@
+:root{
+    --black: #060606;
+    --white: #f2f3f8;
+    --red: #c02739;
+}
+
+.container{
+    padding: 1.5em;
+    padding-left: 3em;
+    min-height: 100vh;
+}
+
+.container .heading{
+    font-weight: 700;
+    font-size: 2em;
+    border-bottom: .1em solid var(--red);
+    padding-bottom: .5em;
+    width: fit-content;
+    margin-top: 1em;
+}
+
+.ad{
+    margin: 3em 1.5em 1em 0;
+    padding: 1.5em 0;
+}
+
+hr{
+    border-top: .1em solid var(--black);
+}
+
+.title{
+    font-size: 1.7em;
+    font-weight: 700;
+    padding: .5em 0;
+}
+
+.image{
+    width: 17em;
+    max-height: 25em;
+}
+
+.image img{
+    width: inherit;
+    border-radius: .7em;
+}

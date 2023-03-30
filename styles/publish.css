@@ -1,0 +1,243 @@
+:root{
+    --black: #060606;
+    --white: #f2f3f8;
+    --red: #c02739;
+}
+
+.ad{
+    padding: 1.5em;
+    padding-left: 3em;
+    min-height: 100vh;
+}
+
+.ad .title{
+    font-weight: 700;
+    font-size: 2em;
+    border-bottom: .1em solid var(--red);
+    padding-bottom: .5em;
+    width: fit-content;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.form{
+    margin: 2rem 0;
+}
+
+.f_main{
+    display: flex;
+    flex-direction: row;
+}
+
+.f_main div{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+label{
+    font-size: 1.1em;
+    margin: .8em 0;
+    font-weight: 700;
+}
+
+input[type="text"], textarea{
+    margin: .5em 0;
+    margin-left: 2em;
+    padding: .2em;
+    font-size: 1.1em;
+    border-radius: .3em;
+    border: .1em solid var(--black);
+}
+
+input[type="submit"]{
+    margin-left: 0;
+    font-weight: 700;
+    border: .2em solid var(--red);
+    border-radius: .3em;
+    padding: .7em;
+    background-color: var(--black);
+    color: var(--white);
+    font-size: 1em;
+    margin-top: 2em;
+}
+
+input[type="submit"]:hover{
+    cursor: pointer;
+    background-color: var(--red);
+    color: var(--white);
+    border-color: var(--black);
+}
+
+input[type="file"]{
+    display: none;
+}
+
+#upload_img{
+    margin-left: 3.7em;
+}
+
+.divider{
+    display: flex;
+    justify-content: space-between;
+}
+
+.categories{
+    background-color: var(--black);
+    padding: 2em;
+}
+
+.categories .heading{
+    background-color: var(--black);
+    color: var(--white);
+    border-bottom: .1em solid var(--red);
+    font-weight: 700;
+    font-size: 1.2em;
+    padding-bottom: .2em;
+    margin-bottom: .5em;
+    text-align: center;
+}
+
+.categories .item{
+    background-color: var(--black);
+    padding: .3em;
+    color: var(--white);
+}
+
+.categories .item label{
+    background-color: var(--black);
+    color: var(--white);
+    font-size: .9em;
+}
+
+/* checkbox */
+.styled {
+    position: absolute;
+    opacity: 0;
+}
+.styled + label {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+}
+.styled + label:before {
+    content: '';
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-top;
+    width: 20px;
+    height: 20px;
+    background: white;
+}
+.styled:hover + label:before {
+    background: var(--red);
+}
+.styled:focus + label:before {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+.styled:checked + label:before {
+    background: var(--red);
+}
+.styled:disabled + label {
+    color: #b8b8b8;
+    cursor: auto;
+}
+.styled:disabled + label:before {
+    box-shadow: none;
+    background: #ddd;
+}
+.styled:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 9px;
+    background: white;
+    width: 2px;
+    height: 2px;
+    box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
+    transform: rotate(45deg);
+}
+
+/* konec checkboxov */
+
+.images{
+    padding: 2rem 0;
+    border-bottom: .2em solid var(--red);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.images{
+    display: flex;
+}
+
+.image{
+    width: fit-content;
+    margin: 1em;
+    position: relative;
+    border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: .7em;
+}
+
+img{
+    width: 15rem;
+    height: auto;
+    margin: .5rem .5rem;
+    border-radius: .7em;
+}
+
+.btn_delete{
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.btn_delete:hover{
+    cursor: pointer;
+}
+
+.btn_cover{
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.btn_cover:hover{
+    cursor: pointer;
+}
+
+.cover_img{
+    border: 2px solid var(--red);
+}
+
+.c_icon, .p_icon{
+    width: 2em;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 0;
+}
+
+.p_icon{
+    width: 1.7em;
+}
+
+.group{
+    display: flex;
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    background-color: rgba(0, 0, 0, 0);
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+#error{
+    display: none;
+    background-color: red;
+    color: var(--white);
+    margin: 1em;
+    padding: .5em;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
