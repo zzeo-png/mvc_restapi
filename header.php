@@ -46,7 +46,7 @@
 	</div>
 
 	<script>
-		$(".header").click(() => {
+		$(".logo").click(() => {
 			window.location.href = "/index.php"
 		})
 		</script>
