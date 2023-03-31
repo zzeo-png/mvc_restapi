@@ -51,6 +51,7 @@
 					?>
 					<li><a href="publish.php">Objavi oglas</a></li>
 					<li><a href="myads.php">Moji oglasi</a></li>
+					<li><a href="admin/index.php?controller=users&action=edit">Moj Račun</a></li>
 					<li><a href="logout.php">Odjava</a></li>
 					<?php
 				}

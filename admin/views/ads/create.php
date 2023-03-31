@@ -134,16 +134,19 @@ function get_categories(){
                 covFlag = false;
             }
         }
-        
 
         if(catFlag && covFlag && images.length > 0){
-            fetch(form.action, {
-            method: form.method,
-            body: formData,
-            redirect: 'follow'
-            })
-            .then(response => {
-                window.location.href = response.url
+            $.ajax({
+                type: 'POST',
+                url: '?controller=ads&action=store',
+                data: formData,
+                cache: false,
+                async: false,
+                contentType: false,
+                processData: false,
+                success: (response) => {
+                    $('html').html(response)
+                }
             })
         }
         else if(images.length <= 0){

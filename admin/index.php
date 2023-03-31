@@ -41,6 +41,11 @@ if(isset($_SESSION["USER_ID"]) && is_admin($_SESSION["USER_ID"])){
     // Vključimo layout, torej splošni izgled strani, layout pa vključuje router (routes.php)
     require_once('views/layout.php');
 }
+else if(isset($_SESSION["USER_ID"]) && $_GET["controller"] == "users" && ($_GET["action"] == "edit" || $_GET["action"] == "user_update")){
+    $controller = $_GET['controller'];
+    $action     = $_GET['action'];
+    require_once('views/layout.php');
+}
 else{
     echo "Vstop prepovedan.";
 }

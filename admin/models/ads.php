@@ -131,23 +131,23 @@ class Ad
         $query = "INSERT INTO ads (title, description, user_id, timestamp)
 			  VALUES('$title', '$desc', '$user_id', now());";
 	
-	// kategorije
-	if($db->query($query)){
-		// dobi vstavljen ID
-		$last_ad_id = mysqli_insert_id($db);
-		
-		foreach($categories as $category){
-			$query_cat_id = "SELECT id FROM categories WHERE name = '$category';";
-			$cat_id = $db->query($query_cat_id);
-			$row = $cat_id->fetch_array();
-			$cat_id = $row['id'];
+        // kategorije
+        if($db->query($query)){
+            // dobi vstavljen ID
+            $last_ad_id = mysqli_insert_id($db);
+            
+            foreach($categories as $category){
+                $query_cat_id = "SELECT id FROM categories WHERE name = '$category';";
+                $cat_id = $db->query($query_cat_id);
+                $row = $cat_id->fetch_array();
+                $cat_id = $row['id'];
 
-			$query_cat = "INSERT INTO category_in_ad (id_ad, id_category)
-						  VALUES($last_ad_id, $cat_id);";
-			$db->query($query_cat);
-		}
+                $query_cat = "INSERT INTO category_in_ad (id_ad, id_category)
+                            VALUES($last_ad_id, $cat_id);";
+                $db->query($query_cat);
+            }
 
-	}
+        }
         else{
             $error = mysqli_error($db);
             return false;
@@ -165,7 +165,7 @@ class Ad
 
             if(in_array($image_ext, $allowed_types)){
                 $image_new_name = pathinfo($image_name, PATHINFO_FILENAME) . "_" .  + date('dmYHis');
-                $img_path = "images/" . $image_new_name;
+                $img_path = "../images/" . $image_new_name;
 
                 if(!move_uploaded_file($image_temp, $img_path)){
                     $error = "Napaka pri nalaganju slike.";
@@ -235,69 +235,77 @@ class Ad
         
         // -- slike --
         // brisanje slik
-        foreach($del_img as $del){
-            $temp = $del['name'];
-            //$query = "INSERT INTO images (name) VALUES ($temp);";
-            $query = "DELETE FROM images WHERE `name` = '$temp';";
-            $db->query($query);
+        if($del_img != null){
+            foreach($del_img as $del){
+                $temp = $del['name'];
+                //$query = "INSERT INTO images (name) VALUES ($temp);";
+                $query = "DELETE FROM images WHERE `name` = '$temp';";
+                $db->query($query);
+            }
         }
-
+        
         // flag za nador covera
         $is_cover_updated = false;
 
         // dodajanje
-        foreach($_FILES["images"]["name"] as $key => $value){
-            $image_name = $_FILES["images"]["name"][$key];
-            $image_temp = $_FILES["images"]["tmp_name"][$key];
-            $image_type = $_FILES["images"]["type"][$key];
-            $image_size = $_FILES["images"]["size"][$key];
-
-            $allowed_types = array("jpg", "jpeg", "png");
-            $image_ext = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
-
-            if(in_array($image_ext, $allowed_types)){
-                $image_new_name = pathinfo($image_name, PATHINFO_FILENAME) . "_" .  + date('dmYHis');
-                $img_path = "images/" . $image_new_name;
-
-                if(!move_uploaded_file($image_temp, $img_path)){
-                    $error = "Napaka pri nalaganju slike.";
-                }
-
-                $query = "INSERT INTO images (`name`, `size`, `type`) VALUES ('$img_path', $image_size, '$image_type');";
-                $db->query($query);
-
-                $last_image_id = mysqli_insert_id($db);
-
-                // preveri če cover photo obstaja
-                $query = "SELECT images.name FROM image_in_ad JOIN images ON image_in_ad.id_image = images.id WHERE id_ad = $ad_id AND is_primary = 1;";
-                $res = $db->query($query);
-
-                // če cover photo ne obstaja ali ni novo podan cover
-                if(($res->num_rows == 0 || $res->fetch_object()->name != $cover) && $cover == $image_name){
-                    $query_image = "INSERT INTO image_in_ad (id_ad, id_image, is_primary)
-                                    VALUES($ad_id, $last_image_id, 1);";
-
-                    // popravi prejsnji cover na 0
-                    $query_fix = "UPDATE image_in_ad SET is_primary = 0 WHERE id_ad = $ad_id AND is_primary = 1;";
-                    $db->query($query_fix);
-
-                    $is_cover_updated = true;
+        if($img != null){
+            foreach($_FILES["images"]["name"] as $key => $value){
+                $image_name = $_FILES["images"]["name"][$key];
+                $image_temp = $_FILES["images"]["tmp_name"][$key];
+                $image_type = $_FILES["images"]["type"][$key];
+                $image_size = $_FILES["images"]["size"][$key];
+    
+                $allowed_types = array("jpg", "jpeg", "png");
+                $image_ext = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
+    
+                if(in_array($image_ext, $allowed_types)){
+                    $image_new_name = pathinfo($image_name, PATHINFO_FILENAME) . "_" .  + date('dmYHis');
+                    $img_path = "../images/" . $image_new_name;
+    
+                    if(!move_uploaded_file($image_temp, $img_path)){
+                        $error = "Napaka pri nalaganju slike.";
+                    }
+    
+                    $query = "INSERT INTO images (`name`, `size`, `type`) VALUES ('$img_path', $image_size, '$image_type');";
+                    $db->query($query);
+    
+                    $last_image_id = mysqli_insert_id($db);
+    
+                    // preveri če cover photo obstaja
+                    $query = "SELECT images.name FROM image_in_ad JOIN images ON image_in_ad.id_image = images.id WHERE id_ad = $ad_id AND is_primary = 1;";
+                    $res = $db->query($query);
+    
+                    // če cover photo ne obstaja ali ni novo podan cover
+                    if(($res->num_rows == 0 || $res->fetch_object()->name != $cover) && $cover == $image_name){
+                        $query_image = "INSERT INTO image_in_ad (id_ad, id_image, is_primary)
+                                        VALUES($ad_id, $last_image_id, 1);";
+    
+                        // popravi prejsnji cover na 0
+                        $query_fix = "UPDATE image_in_ad SET is_primary = 0 WHERE id_ad = $ad_id AND is_primary = 1;";
+                        $db->query($query_fix);
+    
+                        $is_cover_updated = true;
+                    }
+                    else{
+                        $query_image = "INSERT INTO image_in_ad (id_ad, id_image)
+                                        VALUES($ad_id, $last_image_id);";
+                    }
+                    
+                    $db->query($query_image);
+    
                 }
                 else{
-                    $query_image = "INSERT INTO image_in_ad (id_ad, id_image)
-                                    VALUES($ad_id, $last_image_id);";
+                    return Ad::find($id); //iz baze pridobimo posodobljen oglas in ga vrnemo controllerju
                 }
-                
-                $db->query($query_image);
-
-            }
-            else{
-                return Ad::find($id); //iz baze pridobimo posodobljen oglas in ga vrnemo controllerju
             }
         }
 
+        // preveri če cover photo obstaja
+        $query = "SELECT images.name FROM image_in_ad JOIN images ON image_in_ad.id_image = images.id WHERE id_ad = $ad_id AND is_primary = 1;";
+        $res = $db->query($query);
+
         // če cover še vedno ni posodobljen
-        if(!$is_cover_updated){
+        if(!$is_cover_updated && $res->fetch_object()->name != $cover){
             // dobi trenutni cover
             $query = "SELECT images.name FROM image_in_ad JOIN images ON image_in_ad.id_image = images.id WHERE id_ad = $ad_id AND is_primary = 1;";
             $res = $db->query($query);

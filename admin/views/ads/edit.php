@@ -171,18 +171,18 @@
             }
 
 			if(catFlag && covFlag && images.length > 0){
-				fetch(form.action, {
-					method: form.method,
-					body: formData
-				})
-				.then(response => {
-                    if(response.ok){
-					    window.location.href = response.url
+                $.ajax({
+                    type: 'POST',
+                    url: '?controller=ads&action=update',
+                    data: formData,
+                    cache: false,
+                    async: false,
+                    contentType: false,
+                    processData: false,
+                    success: (response) => {
+                        $('html').html(response)
                     }
-                    else{
-                        console.log("ERROR")
-                    }
-				})
+                })
 			}
 			else if(images.length <= 0){
 				$("#error").css("display", "block")
